@@ -3,12 +3,14 @@ class ListsController < ApplicationController
     @list = List.new
   end
   
-  def create
-    
-    list = List.new(list_params)
-    list.save
-    redirect_to list_path(list.id)
-  end
+   def create
+    @list = List.new(list_params)
+    if @list.save
+      redirect_to list_path(@list.id)
+    else
+      render :new
+    end  
+   end
 
   def index
     @lists = List.all
@@ -20,6 +22,12 @@ class ListsController < ApplicationController
 
   def edit
     @list = List.find(params[:id])
+  end
+  
+  def destroy
+    list = List.find(params[:id])
+    list.destroy
+    redirect_to "/lists"
   end
   
   def update
